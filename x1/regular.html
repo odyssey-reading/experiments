@@ -39,7 +39,15 @@
         // Load content
         async function loadContent() {
             try {
-                const response = await fetch('content.html');
+                // Get the story from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const storyPath = urlParams.get('story');
+
+                if (!storyPath) {
+                    throw new Error('No story specified');
+                }
+
+                const response = await fetch(storyPath);
                 const html = await response.text();
                 document.getElementById('content').innerHTML = html;
             } catch (error) {

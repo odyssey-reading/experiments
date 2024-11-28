@@ -60,7 +60,15 @@
 
         async function loadContent() {
             try {
-                const response = await fetch('content.html');
+                // Get the story from URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const storyPath = urlParams.get('story');
+
+                if (!storyPath) {
+                    throw new Error('No story specified');
+                }
+
+                const response = await fetch(storyPath);
                 let html = await response.text();
 
                 // Create a temporary container to parse the HTML
