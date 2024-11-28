@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPUB Content - Striped</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/@tailwindcss/typography@0.4.1/dist/typography.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-white">
+    <!-- Controls -->
+    <div class="container mx-auto px-4">
+        <div class="my-4 flex gap-2 justify-end">
+            <button onclick="adjustFontSize(-1)" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">A-</button>
+            <button onclick="adjustFontSize(1)" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">A+</button>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div id="content" class="prose mx-auto">
+        Loading...
+    </div>
+
+    <script>
+        let currentSize = 100;
+        const MIN_SIZE = 80;
+        const MAX_SIZE = 200;
+        const STEP = 10;
+
+        function adjustFontSize(direction) {
+            currentSize += direction * STEP;
+            currentSize = Math.max(MIN_SIZE, Math.min(MAX_SIZE, currentSize));
+            document.getElementById('content').style.fontSize = `${currentSize}%`;
+        }
+
+        function addSentenceBreaks(text) {
+            // Common abbreviations to avoid breaking after
+            const abbreviations = ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Sr.', 'Jr.', 'i.e.', 'e.g.', 'etc.'];
+
+            // Replace sentence endings with breaks, but not if they're part of an abbreviation
+            let processedText = text;
+
+            // First, temporarily replace abbreviations
+            abbreviations.forEach((abbr, index) => {
+                processedText = processedText.replace(new RegExp(abbr.replace('.', '\\.'), 'g'), `ABBR${index}`);
+            });
+
+            // Add breaks after sentences
+            processedText = processedText.replace(/([.!?])\s+/g, '$1<br><br>');
+
+            // Restore abbreviations
+            abbreviations.forEach((abbr, index) => {
+                processedText = processedText.replace(new RegExp(`ABBR${index}`, 'g'), abbr);
+            });
+
+            return processedText;
+        }
+
+        async function loadContent() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const storyPath = urlParams.get('story');
+
+                if (!storyPath) {
+                    throw new Error('No story specified');
+                }
+
+                const response = await fetch(storyPath);
+                let html = await response.text();
+
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                const paragraphs = tempDiv.getElementsByTagName('p');
+                Array.from(paragraphs).forEach((p, index) => {
+                    p.style.width = '100vw';
+                    p.style.marginLeft = 'calc(-50vw + 50%)';
+                    p.style.marginRight = 'calc(-50vw + 50%)';
+                    p.style.backgroundColor = index % 2 === 0 ? 'white' : '#f7f7f7';
+                    p.style.padding = '1rem';
+                });
+
+                document.getElementById('content').innerHTML = tempDiv.innerHTML;
+            } catch (error) {
+                console.error('Error loading content:', error);
+                document.getElementById('content').innerHTML = 'Error loading content';
+            }
+        }
+        loadContent();
+    </script>
+</body>
+
+</html>
