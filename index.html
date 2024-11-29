@@ -4,53 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Format Experiment</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <title>Articles</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
+    <script>
+        const articles = [
+            { id: 'am-i-in-a-toxic-relationship', title: 'Am I in a Toxic Relationship?' },
+            { id: 'climate-migrants', title: 'Climate Migrants: The Human Face of Climate Change' },
+            { id: 'crypto-addicts', title: 'Crypto Addicts: When Trading Becomes an Obsession' },
+            { id: 'egypt-travel-guide', title: 'Egypt Travel Guide: Beyond the Pyramids' },
+            { id: 'finding-calm-in-cities', title: 'Finding Calm in Cities: Urban Meditation Spots' },
+            { id: 'learning-from-penguin-poop', title: 'Learning from Penguin Poop: Climate Change Clues' },
+            { id: 'personality-and-health', title: 'Personality and Health: The Hidden Connection' },
+            { id: 'second-hand-fashion', title: 'Second-Hand Fashion: Sustainable Style' },
+            { id: 'teenage-social-media-millionaires', title: 'Teenage Social Media Millionaires' },
+            { id: 'the-most-unusual-tourist-attractions', title: 'The Most Unusual Tourist Attractions' },
+            { id: 'the-principles-of-the-new-high-protein-diet', title: 'The Principles of the New High-Protein Diet' },
+            { id: 'uk-students-protest-covid-19-measures', title: 'UK Students Protest COVID-19 Measures' }
+        ];
+
+        window.onload = () => {
+            const list = document.getElementById('articleList');
+            const viewType = new URLSearchParams(window.location.search).get('view') || 'regular';
+
+            articles.forEach(article => {
+                const div = document.createElement('div');
+                div.className = 'p-4 border rounded shadow-sm hover:shadow-md transition-shadow';
+
+                const link = document.createElement('a');
+                link.href = `reader.html?article=${article.id}&view=${viewType}`;
+                link.className = 'text-blue-600 hover:underline';
+                link.textContent = article.title;
+
+                div.appendChild(link);
+                list.appendChild(div);
+            });
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-16">
-        <h1 class="text-4xl font-bold text-center mb-8">Choose a Text and Format</h1>
-        <!-- Ancient Rome and Greece -->
-        <div class="mb-12">
-            <h2 class="text-2xl font-semibold mb-4 text-center">Ancient Rome and Greece</h2>
-            <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                <a href="regular.html?story=stories/ancient-rome-and-greece.html"
-                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold mb-4">Regular Format</h3>
-                    <p class="text-gray-600">Classic reading experience with clean typography.</p>
-                </a>
-                <a href="striped.html?story=stories/ancient-rome-and-greece.html"
-                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold mb-4">Striped Format</h3>
-                    <p class="text-gray-600">Alternating backgrounds with separated sentences.</p>
-                </a>
-                <a href="striped-2.html?story=stories/ancient-rome-and-greece.html"
-                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold mb-4">Striped Only</h3>
-                    <p class="text-gray-600">Alternating backgrounds without sentence separation.</p>
-                </a>
-            </div>
-        </div>
-        <!-- Examining the Problem of Bycatch -->
-        <div>
-            <h2 class="text-2xl font-semibold mb-4 text-center">Examining the Problem of Bycatch</h2>
-            <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                <a href="regular.html?story=stories/examining-the-problem-of-bycatch.html"
-                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold mb-4">Regular Format</h3>
-                    <p class="text-gray-600">Classic reading experience with clean typography.</p>
-                </a>
-                <a href="striped.html?story=stories/examining-the-problem-of-bycatch.html"
-                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold mb-4">Striped Format</h3>
-                    <p class="text-gray-600">Alternating backgrounds with separated sentences.</p>
-                </a>
-                <a href="striped-2.html?story=stories/examining-the-problem-of-bycatch.html"
-                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-semibold mb-4">Striped Only</h3>
-                    <p class="text-gray-600">Alternating backgrounds without sentence separation.</p>
-                </a>
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold mb-8">Articles</h1>
+            <div id="articleList" class="space-y-3">
             </div>
         </div>
     </div>

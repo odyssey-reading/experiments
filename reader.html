@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Reader</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/@tailwindcss/typography@0.4.1/dist/typography.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
+    <script>
+        async function loadArticle(id, viewType) {
+            try {
+                const response = await fetch(`articles/${id}.html`);
+                const html = await response.text();
+
+                if (viewType === 'striped') {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+
+                    // Get all paragraphs
+                    const paragraphs = tempDiv.getElementsByTagName('p');
+                    let allContent = '';
+
+                    // Process each paragraph
+                    Array.from(paragraphs).forEach(p => {
+                        let text = p.textContent;
+                        text = text.replace(/([.!?])\s+/g, '$1<br><br>');
+                        allContent += `<p>${text}</p>`;
+                    });
+
+                    document.getElementById('content').innerHTML = tempDiv.querySelector('h1').outerHTML + allContent;
+                } else {
+                    document.getElementById('content').innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading article:', error);
+                document.getElementById('content').innerHTML = 'Error loading article';
+            }
+        }
+
+        window.onload = () => {
+            const articleId = new URLSearchParams(window.location.search).get('article');
+            const viewType = new URLSearchParams(window.location.search).get('view') || 'regular';
+
+            if (articleId) {
+                loadArticle(articleId, viewType);
+                document.body.className = viewType === 'striped' ? 'striped-view' : '';
+            }
+
+            document.querySelectorAll('.font-size-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const content = document.getElementById('content');
+                    const currentSize = parseInt(window.getComputedStyle(content).fontSize);
+                    content.style.fontSize = `${currentSize + (e.target.textContent === 'A+' ? 2 : -2)}px`;
+                });
+            });
+        };
+    </script>
+    <style>
+        .striped-view p {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            padding-left: max(1rem, calc((100vw - 65ch) / 2));
+            padding-right: max(1rem, calc((100vw - 65ch) / 2));
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .striped-view p:nth-child(odd) {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mx-auto px-4">
+        <div class="my-4 flex gap-2 justify-end max-w-prose mx-auto">
+            <button class="font-size-btn px-3 py-1 border rounded">A-</button>
+            <button class="font-size-btn px-3 py-1 border rounded">A+</button>
+        </div>
+        <div id="content" class="prose prose-slate mx-auto">
+            Loading...
+        </div>
+    </div>
+</body>
+
+</html>
