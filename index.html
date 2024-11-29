@@ -5,7 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Articles</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/lodash@4.17.21/lodash.min.js"></script>
+</head>
+
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold mb-8">Articles</h1>
+            <div id="articleList" class="space-y-3">
+            </div>
+        </div>
+    </div>
+
     <script>
         const articles = [
             { id: 'am-i-in-a-toxic-relationship', title: 'Am I in a Toxic Relationship?' },
@@ -22,35 +34,23 @@
             { id: 'uk-students-protest-covid-19-measures', title: 'UK Students Protest COVID-19 Measures' }
         ];
 
-        window.onload = () => {
-            const list = document.getElementById('articleList');
-            const viewType = new URLSearchParams(window.location.search).get('view') || 'regular';
+        const list = document.getElementById('articleList');
+        const viewType = new URLSearchParams(window.location.search).get('view') || 'regular';
 
-            articles.forEach(article => {
-                const div = document.createElement('div');
-                div.className = 'p-4 border rounded shadow-sm hover:shadow-md transition-shadow';
+        // Using Lodash's shuffle
+        const randomizedArticles = _.shuffle(articles);
 
-                const link = document.createElement('a');
-                link.href = `reader.html?article=${article.id}&view=${viewType}`;
-                link.className = 'text-blue-600 hover:underline';
-                link.textContent = article.title;
-
-                div.appendChild(link);
-                list.appendChild(div);
-            });
-        };
+        randomizedArticles.forEach(article => {
+            const div = document.createElement('div');
+            div.className = 'p-4 border rounded shadow-sm hover:shadow-md transition-shadow';
+            const link = document.createElement('a');
+            link.href = `reader.html?article=${article.id}&view=${viewType}`;
+            link.className = 'text-blue-600 hover:underline';
+            link.textContent = article.title;
+            div.appendChild(link);
+            list.appendChild(div);
+        });
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body>
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-3xl font-bold mb-8">Articles</h1>
-            <div id="articleList" class="space-y-3">
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>
