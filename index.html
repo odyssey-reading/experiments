@@ -4,22 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading Experiments</title>
+    <title>Text Format Experiment</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-16">
-        <h1 class="text-4xl font-bold text-center mb-8">Reading Experiments</h1>
-
-        <div class="max-w-2xl mx-auto">
-            <a href="x1/index.html"
-                class="block p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow mb-4">
-                <h2 class="text-2xl font-semibold mb-2">Experiment 1: Text Display Formats</h2>
-                <p class="text-gray-600">Comparing different text presentation formats for readability.</p>
-            </a>
-
-            <!-- Future experiments will be added here -->
+        <h1 class="text-4xl font-bold text-center mb-8">Choose a Text and Format</h1>
+        <!-- Ancient Rome and Greece -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-semibold mb-4 text-center">Ancient Rome and Greece</h2>
+            <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                <a href="regular.html?story=stories/ancient-rome-and-greece.html"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4">Regular Format</h3>
+                    <p class="text-gray-600">Classic reading experience with clean typography.</p>
+                </a>
+                <a href="striped.html?story=stories/ancient-rome-and-greece.html"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4">Striped Format</h3>
+                    <p class="text-gray-600">Alternating backgrounds with separated sentences.</p>
+                </a>
+                <a href="striped-2.html?story=stories/ancient-rome-and-greece.html"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4">Striped Only</h3>
+                    <p class="text-gray-600">Alternating backgrounds without sentence separation.</p>
+                </a>
+            </div>
+        </div>
+        <!-- Examining the Problem of Bycatch -->
+        <div>
+            <h2 class="text-2xl font-semibold mb-4 text-center">Examining the Problem of Bycatch</h2>
+            <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                <a href="regular.html?story=stories/examining-the-problem-of-bycatch.html"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4">Regular Format</h3>
+                    <p class="text-gray-600">Classic reading experience with clean typography.</p>
+                </a>
+                <a href="striped.html?story=stories/examining-the-problem-of-bycatch.html"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4">Striped Format</h3>
+                    <p class="text-gray-600">Alternating backgrounds with separated sentences.</p>
+                </a>
+                <a href="striped-2.html?story=stories/examining-the-problem-of-bycatch.html"
+                    class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <h3 class="text-xl font-semibold mb-4">Striped Only</h3>
+                    <p class="text-gray-600">Alternating backgrounds without sentence separation.</p>
+                </a>
+            </div>
         </div>
     </div>
 </body>
