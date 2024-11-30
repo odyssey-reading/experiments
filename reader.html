@@ -37,9 +37,9 @@
                             /(?:^|[.!?]\s+)(\p{L}+)/gu,
                             (match, word) => {
                                 if (emphasis === 'letter') {
-                                    return match.replace(word, `<strong>${word[0]}</strong>${word.slice(1)}`);
+                                    return match.replace(word, `<span class="subtle-emphasis">${word[0]}</span>${word.slice(1)}`);
                                 } else if (emphasis === 'word') {
-                                    return match.replace(word, `<strong>${word}</strong>`);
+                                    return match.replace(word, `<span class="subtle-emphasis">${word}</span>`);
                                 }
                                 return match;
                             }
@@ -115,6 +115,12 @@
         #content.prose p {
             text-align: justify;
             line-height: 1.8;
+        }
+
+        /* Subtle emphasis styles */
+        .subtle-emphasis {
+            font-weight: 600;
+            color: #4d5461;
         }
     </style>
 </head>
