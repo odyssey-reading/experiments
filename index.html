@@ -17,7 +17,6 @@
             </div>
         </div>
     </div>
-
     <script>
         const articles = [
             { id: 'am-i-in-a-toxic-relationship', title: 'Am I in a Toxic Relationship?' },
@@ -30,16 +29,17 @@
         ];
 
         const list = document.getElementById('articleList');
-        const viewType = new URLSearchParams(window.location.search).get('view') || 'regular';
+        const params = new URLSearchParams(window.location.search);
+        const striped = params.get('striped') || 'false';
+        const spacing = params.get('spacing') || 'none';
 
         // Using Lodash's shuffle
         const randomizedArticles = _.shuffle(articles);
-
         randomizedArticles.forEach(article => {
             const div = document.createElement('div');
             div.className = 'p-4 border rounded shadow-sm hover:shadow-md transition-shadow';
             const link = document.createElement('a');
-            link.href = `reader.html?article=${article.id}&view=${viewType}`;
+            link.href = `reader.html?article=${article.id}&striped=${striped}&spacing=${spacing}`;
             link.className = 'text-blue-600 hover:underline';
             link.textContent = article.title;
             div.appendChild(link);

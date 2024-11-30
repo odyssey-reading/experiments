@@ -9,30 +9,45 @@
     <link href="https://unpkg.com/@tailwindcss/typography@0.4.1/dist/typography.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
     <script>
-        async function loadArticle(id, viewType) {
+        async function loadArticle(id) {
             try {
                 const response = await fetch(`articles/${id}.html`);
                 const html = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
 
-                if (viewType === 'striped') {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
+                // Get view settings from URL parameters
+                const params = new URLSearchParams(window.location.search);
+                const isStriped = params.get('striped') === 'true';
+                const sentenceSpacing = params.get('spacing') || 'none'; // none, horizontal, vertical
 
-                    // Get all paragraphs
-                    const paragraphs = tempDiv.getElementsByTagName('p');
-                    let allContent = '';
+                // Get all paragraphs
+                const paragraphs = tempDiv.getElementsByTagName('p');
+                let allContent = '';
 
-                    // Process each paragraph
-                    Array.from(paragraphs).forEach(p => {
-                        let text = p.textContent;
+                // Process each paragraph
+                Array.from(paragraphs).forEach(p => {
+                    let text = p.textContent;
+
+                    // Apply sentence spacing if selected
+                    if (sentenceSpacing === 'vertical') {
                         text = text.replace(/([.!?])\s+/g, '$1<br><br>');
-                        allContent += `<p>${text}</p>`;
-                    });
+                    } else if (sentenceSpacing === 'horizontal') {
+                        text = text.replace(/([.!?])\s+/g, '$1<span class="sentence-space"></span>');
+                    }
 
-                    document.getElementById('content').innerHTML = tempDiv.querySelector('h1').outerHTML + allContent;
-                } else {
-                    document.getElementById('content').innerHTML = html;
-                }
+                    allContent += `<p>${text}</p>`;
+                });
+
+                // Update content and classes
+                const contentDiv = document.getElementById('content');
+                contentDiv.innerHTML = tempDiv.querySelector('h1').outerHTML + allContent;
+
+                // Apply striping class
+                document.body.className = isStriped ? 'striped-view' : '';
+
+                // Apply sentence spacing class
+                contentDiv.classList.toggle('spaced-sentences', sentenceSpacing === 'horizontal');
             } catch (error) {
                 console.error('Error loading article:', error);
                 document.getElementById('content').innerHTML = 'Error loading article';
@@ -41,13 +56,11 @@
 
         window.onload = () => {
             const articleId = new URLSearchParams(window.location.search).get('article');
-            const viewType = new URLSearchParams(window.location.search).get('view') || 'regular';
-
             if (articleId) {
-                loadArticle(articleId, viewType);
-                document.body.className = viewType === 'striped' ? 'striped-view' : '';
+                loadArticle(articleId);
             }
 
+            // Setup font size controls
             document.querySelectorAll('.font-size-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const content = document.getElementById('content');
@@ -74,6 +87,18 @@
         .striped-view p:nth-child(odd) {
             background-color: #f3f4f6;
         }
+
+        /* Sentence spacing styles */
+        .sentence-space {
+            display: inline-block;
+            width: 2em;
+        }
+
+        /* Additional spacing adjustments for spaced view */
+        #content.prose p {
+            text-align: justify;
+            line-height: 1.8;
+        }
     </style>
 </head>
 
@@ -88,5 +113,3 @@
         </div>
     </div>
 </body>
-
-</html>
