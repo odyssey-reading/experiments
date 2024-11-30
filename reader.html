@@ -20,6 +20,7 @@
                 const params = new URLSearchParams(window.location.search);
                 const isStriped = params.get('striped') === 'true';
                 const sentenceSpacing = params.get('spacing') || 'none'; // none, horizontal, vertical
+                const emphasis = params.get('emphasis') || 'none'; // none, letter, word
 
                 // Get all paragraphs
                 const paragraphs = tempDiv.getElementsByTagName('p');
@@ -28,6 +29,22 @@
                 // Process each paragraph
                 Array.from(paragraphs).forEach(p => {
                     let text = p.textContent;
+
+                    // Apply emphasis if selected
+                    if (emphasis !== 'none') {
+                        // Match sentences: Start of text or after period/exclamation/question mark followed by space
+                        text = text.replace(
+                            /(?:^|[.!?]\s+)(\p{L}+)/gu,
+                            (match, word) => {
+                                if (emphasis === 'letter') {
+                                    return match.replace(word, `<strong>${word[0]}</strong>${word.slice(1)}`);
+                                } else if (emphasis === 'word') {
+                                    return match.replace(word, `<strong>${word}</strong>`);
+                                }
+                                return match;
+                            }
+                        );
+                    }
 
                     // Apply sentence spacing if selected
                     if (sentenceSpacing === 'vertical') {
@@ -113,3 +130,5 @@
         </div>
     </div>
 </body>
+
+</html>
